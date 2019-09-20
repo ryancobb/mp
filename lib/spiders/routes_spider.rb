@@ -1,6 +1,6 @@
 class RoutesSpider < Kimurai::Base
   @name = "routes_spider"
-  @engine = :mechanize
+  @engine = :selenium_chrome
   @start_urls = [] # not used, we pass url directly to parse method
 
   def parse(response, url:, data: {})
@@ -15,7 +15,7 @@ class RoutesSpider < Kimurai::Base
       request_to(:parse_route_page, url: route[:link], data: route)
     end
 
-    save_to "results.json", { routes: new_routes }, format: :pretty_json
+    save_to "results/#{Time.now.strftime('%Y-%m-%d_%H-%M-%S')}.json", { routes: new_routes }, format: :pretty_json, position: false
   end
 
   def parse_route_page(response, url:, data: {})
